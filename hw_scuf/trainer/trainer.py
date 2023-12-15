@@ -196,6 +196,7 @@ class Trainer(BaseTrainer):
                     is_train=False,
                     metrics=self.evaluation_metrics,
                 )
+            print("APPEND", len(targets), len(log_probs))
             log_probs.append(batch['log_probs'])
             targets.append(batch['target'])
             self.writer.set_step(epoch * self.len_epoch, part)
