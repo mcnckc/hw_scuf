@@ -70,6 +70,12 @@
       "args": {
         "name": "EER"
       }
+    },
+    {
+      "type": "AccuracyMetric",
+      "args": {
+        "name": "Accuracy"
+      }
     }
   ],
   "lr_scheduler": {
