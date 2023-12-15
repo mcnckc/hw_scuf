@@ -13,10 +13,12 @@ class BaselineModel(BaseModel):
             nn.ReLU(),
             nn.Linear(in_features=fc_hidden, out_features=fc_hidden),
             nn.ReLU(),
+            nn.Flatten(),
             nn.Linear(in_features=fc_hidden, out_features=2)
         )
 
     def forward(self, spectrogram, **batch):
+        print('S Shape', spectrogram.shape)
         return {"logits": self.net(spectrogram.transpose(1, 2))}
 
     def transform_input_lengths(self, input_lengths):
