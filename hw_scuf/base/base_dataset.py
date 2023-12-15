@@ -34,7 +34,6 @@ class BaseDataset(Dataset):
         index = self._filter_records_from_dataset(index, limit)
         # it's a good idea to sort index by audio length
         # It would be easier to write length-based batch samplers later
-        index = self._sort_index(index)
         self._index: List[dict] = index
 
     def __getitem__(self, ind):
@@ -48,10 +47,6 @@ class BaseDataset(Dataset):
             "duration": audio_wave.size(1) / self.config_parser["preprocessing"]["sr"],
             "target": data_dict['target']
         }
-
-    @staticmethod
-    def _sort_index(index):
-        return sorted(index, key=lambda x: x["audio_len"])
 
     def __len__(self):
         return len(self._index)

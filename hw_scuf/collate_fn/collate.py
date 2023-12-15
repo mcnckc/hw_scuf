@@ -13,6 +13,7 @@ def collate_fn(dataset_items: List[dict]):
     result_batch = {}
     result_batch['spectrogram_length'] = torch.tensor([item['spectrogram'].shape[-1] for item in dataset_items])
     max_sp_len = result_batch['spectrogram_length'].max()
+    logger.info('Max spec length ' + str(max_sp_len))
     spectral_silence = torch.log(torch.tensor(1e-5)).item()
     result_batch['spectrogram'] = torch.stack([nn.ConstantPad1d((0, max_sp_len - item['spectrogram'].shape[-1]), spectral_silence)
                                                (item['spectrogram'].squeeze()) for item in dataset_items])
