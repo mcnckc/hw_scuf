@@ -75,12 +75,12 @@ class BaseDataset(Dataset):
                 audio_tensor_spec = torch.log(audio_tensor_spec + 1e-5)
 
             if audio_tensor_spec.shape[-1] < self.max_spec_len:
-                audio_tensor_spec = torch.nn.functional.pad(audio_tensor_spec, 
+                audio_tensor_spec = torch.nn.functional.pad(audio_tensor_spec[None, ...], 
                                         (0, self.max_spec_len - audio_tensor_spec.shape[-1]),
-                                        'replicate')
+                                        'circular').squeeze(dim=0)
             else:
                 audio_tensor_spec = audio_tensor_spec[:, :self.max_spec_len]
-                
+
             return audio_tensor_wave, audio_tensor_spec
 
     @staticmethod
