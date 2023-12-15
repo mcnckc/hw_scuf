@@ -54,10 +54,10 @@ class ASV(BaseDataset):
             tg_file = tg_dir / 'ASVspoof2019.LA.cm.train.trn.txt'
         elif part == 'dev':
             split_dir = self._data_dir / 'ASVspoof2019_LA_dev' / 'flac'
-            tg_file = tg_dir / 'ASVspoof2019.LA.cm.dev.trn.txt'
+            tg_file = tg_dir / 'ASVspoof2019.LA.cm.dev.trl.txt'
         elif part == 'eval':
             split_dir = self._data_dir / 'ASVspoof2019_LA_eval' / 'flac'
-            tg_file = tg_dir / 'ASVspoof2019.LA.cm.eval.trn.txt'
+            tg_file = tg_dir / 'ASVspoof2019.LA.cm.eval.trl.txt'
         else:
             assert False, "Invalid part"
         target = dict()
