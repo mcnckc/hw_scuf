@@ -19,6 +19,7 @@ class BaseDataset(Dataset):
             self,
             index,
             config_parser: ConfigParser,
+            max_spec_len=600,
             wave_augs=None,
             spec_augs=None,
             limit=None,
@@ -29,7 +30,7 @@ class BaseDataset(Dataset):
         self.wave_augs = wave_augs
         self.spec_augs = spec_augs
         self.log_spec = config_parser["preprocessing"]["log_spec"]
-
+        self.max_spec_len = max_spec_len
         self._assert_index_is_valid(index)
         index = self._filter_records_from_dataset(index, limit)
         # it's a good idea to sort index by audio length
@@ -72,6 +73,14 @@ class BaseDataset(Dataset):
                 audio_tensor_spec = self.spec_augs(audio_tensor_spec)
             if self.log_spec:
                 audio_tensor_spec = torch.log(audio_tensor_spec + 1e-5)
+
+            if audio_tensor_spec.shape[-1] < self.max_spec_len:
+                audio_tensor_spec = torch.nn.functional.pad(audio_tensor_spec, 
+                                        (0, self.max_spec_len - audio_tensor_spec.shape[-1]),
+                                        'replicate')
+            else:
+                audio_tensor_spec = audio_tensor_spec[:, :self.max_spec_len]
+                
             return audio_tensor_wave, audio_tensor_spec
 
     @staticmethod

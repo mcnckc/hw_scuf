@@ -5,7 +5,7 @@ from hw_scuf.base import BaseModel
 
 
 class BaselineModel(BaseModel):
-    def __init__(self, n_feats, fc_hidden=512, **batch):
+    def __init__(self, n_feats, max_spec_len, fc_hidden=512, **batch):
         super().__init__(**batch)
         self.net = Sequential(
             # people say it can aproximate any function...
@@ -14,7 +14,7 @@ class BaselineModel(BaseModel):
             nn.Linear(in_features=fc_hidden, out_features=fc_hidden),
             nn.ReLU(),
             nn.Flatten(),
-            nn.Linear(in_features=fc_hidden, out_features=2)
+            nn.Linear(in_features=fc_hidden * max_spec_len, out_features=2)
         )
 
     def forward(self, spectrogram, **batch):

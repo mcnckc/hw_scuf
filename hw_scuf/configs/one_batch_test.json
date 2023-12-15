@@ -18,7 +18,8 @@
     "type": "BaselineModel",
     "args": {
       "n_feats": 128,
-      "fc_hidden": 512
+      "fc_hidden": 512,
+      "max_spec_len":600
     }
   },
   "data": {
@@ -31,6 +32,7 @@
           "args": {
             "part": "train",
             "data_dir": "/kaggle/input/asvpoof-2019-dataset/LA/LA",
+            "max_spec_len":600,
             "limit": 10
           }
         }
@@ -45,6 +47,7 @@
           "args": {
             "part": "dev",
             "data_dir": "/kaggle/input/asvpoof-2019-dataset/LA/LA",
+            "max_spec_len":600,
             "limit": 10
           }
         }
