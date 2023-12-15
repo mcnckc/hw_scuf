@@ -24,7 +24,7 @@
   },
   "data": {
     "train": {
-      "batch_size": 10,
+      "batch_size": 64,
       "num_workers": 0,
       "datasets": [
         {
@@ -33,13 +33,13 @@
             "part": "train",
             "data_dir": "/kaggle/input/asvpoof-2019-dataset/LA/LA",
             "max_spec_len":400,
-            "limit": 10
+            "limit": 1000
           }
         }
       ]
     },
     "val": {
-      "batch_size": 10,
+      "batch_size": 64,
       "num_workers": 0,
       "datasets": [
         {
@@ -48,7 +48,7 @@
             "part": "dev",
             "data_dir": "/kaggle/input/asvpoof-2019-dataset/LA/LA",
             "max_spec_len":400,
-            "limit": 10
+            "limit": 1000
           }
         }
       ]
@@ -91,7 +91,6 @@
     "early_stop": 100,
     "visualize": "wandb",
     "wandb_project": "scuf_project",
-    "len_epoch": 100,
     "grad_norm_clip": 10
   }
 }
