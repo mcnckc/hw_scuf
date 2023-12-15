@@ -78,9 +78,8 @@ class BaseDataset(Dataset):
                 audio_tensor_spec = torch.nn.functional.pad(audio_tensor_spec, 
                                         (0, self.max_spec_len - audio_tensor_spec.shape[-1]),
                                         'constant', np.log(1e-5))
-                print("padded shape", audio_tensor_spec.shape)
             else:
-                audio_tensor_spec = audio_tensor_spec[:, :self.max_spec_len]
+                audio_tensor_spec = audio_tensor_spec[..., :self.max_spec_len]
 
             return audio_tensor_wave, audio_tensor_spec
 
