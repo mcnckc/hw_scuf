@@ -201,7 +201,7 @@ class Trainer(BaseTrainer):
             self.writer.set_step(epoch * self.len_epoch, part)
             #self._log_scalars(self.evaluation_metrics)
             self._log_spectrogram(batch["spectrogram"])
-
+        print("LEN TG", len(targets), len(log_probs))
         # add histogram of model parameters to the tensorboard
         for name, p in self.model.named_parameters():
             self.writer.add_histogram(name, p, bins="auto")
