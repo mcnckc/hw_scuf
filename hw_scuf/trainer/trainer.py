@@ -14,7 +14,6 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 from hw_scuf.base import BaseTrainer
 from hw_scuf.base.base_text_encoder import BaseTextEncoder
 from hw_scuf.logger.utils import plot_spectrogram_to_buf
-from hw_scuf.metric.utils import calc_cer, calc_wer
 from hw_scuf.utils import inf_loop, MetricTracker
 
 
@@ -122,7 +121,6 @@ class Trainer(BaseTrainer):
                 self.writer.add_scalar(
                     "learning rate", self.optimizer.param_groups[0]['lr']
                 )
-                self._log_predictions(**batch)
                 self._log_spectrogram(batch["spectrogram"])
                 self._log_scalars(self.train_metrics)
                 # we don't want to reset train metrics at the start of every epoch
@@ -190,7 +188,6 @@ class Trainer(BaseTrainer):
                 )
             self.writer.set_step(epoch * self.len_epoch, part)
             self._log_scalars(self.evaluation_metrics)
-            self._log_predictions(**batch)
             self._log_spectrogram(batch["spectrogram"])
 
         # add histogram of model parameters to the tensorboard
@@ -208,42 +205,6 @@ class Trainer(BaseTrainer):
             total = self.len_epoch
         return base.format(current, total, 100.0 * current / total)
 
-    def _log_predictions(
-            self,
-            text,
-            log_probs,
-            log_probs_length,
-            audio_path,
-            examples_to_log=10,
-            *args,
-            **kwargs,
-    ):
-        # TODO: implement logging of beam search results
-        if self.writer is None:
-            return
-        argmax_inds = log_probs.cpu().argmax(-1).numpy()
-        argmax_inds = [
-            inds[: int(ind_len)]
-            for inds, ind_len in zip(argmax_inds, log_probs_length.numpy())
-        ]
-        argmax_texts_raw = [self.text_encoder.decode(inds) for inds in argmax_inds]
-        argmax_texts = [self.text_encoder.ctc_decode(inds) for inds in argmax_inds]
-        #bs_texts = [self.text_encoder.ctc_beam_search(log_probsх0.cpu(), log_probs_length)]
-        tuples = list(zip(argmax_texts, text, argmax_texts_raw, audio_path))
-        shuffle(tuples)
-        rows = {}
-        for pred, target, raw_pred, audio_path in tuples[:examples_to_log]:
-            target = BaseTextEncoder.normalize_text(target)
-            wer = calc_wer(target, pred) * 100
-            cer = calc_cer(target, pred) * 100
-            rows[Path(audio_path).name] = {
-                "target": target,
-                "raw prediction": raw_pred,
-                "predictions": pred,
-                "wer": wer,
-                "cer": cer,
-            }
-        self.writer.add_table("predictions", pd.DataFrame.from_dict(rows, orient="index"))
 
     def _log_spectrogram(self, spectrogram_batch):
         spectrogram = random.choice(spectrogram_batch.cpu())
