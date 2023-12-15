@@ -133,6 +133,7 @@ class Trainer(BaseTrainer):
 
         log_probs = torch.cat(log_probs, dim=0)
         targets = torch.cat(targets, dim=-1)
+        print("TRAIN TARGETS SHAPE", targets.shape)
         for met in self.metrics:
             self.evaluation_metrics.update(met.name, met(log_probs, targets))
 
@@ -206,6 +207,7 @@ class Trainer(BaseTrainer):
             self.writer.add_histogram(name, p, bins="auto")
         log_probs = torch.cat(log_probs, dim=0)
         targets = torch.cat(targets, dim=-1)
+        print("VAL TARGETS SHAPE", targets.shape)
         for met in self.metrics:
             self.evaluation_metrics.update(met.name, met(log_probs, targets))
         self._log_scalars(self.evaluation_metrics)
