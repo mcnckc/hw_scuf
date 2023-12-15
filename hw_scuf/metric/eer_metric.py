@@ -13,4 +13,5 @@ class EERMetric(BaseMetric):
 
     def __call__(self, log_probs: Tensor, target: Tensor, **kwargs):
         bon_probs, scuf_probs = log_probs[:, 0], log_probs[:, 1]
+        print('TARGET:', target)
         return compute_eer(bon_probs[target == 0].cpu().detach().numpy(), bon_probs[target == 1].cpu().detach().numpy())[0]
