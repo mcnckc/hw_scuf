@@ -68,6 +68,7 @@ class ASV(BaseDataset):
         assert split_dir.exists(), "No data folder"
 
         for file in tqdm(split_dir.iterdir(), desc='making index'):
+            logger.info('Cur path ' + str(file.stem))
             index.append(
                 {
                     "path": str(file.absolute()),
