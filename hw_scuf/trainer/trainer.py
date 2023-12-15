@@ -40,11 +40,11 @@ class Trainer(BaseTrainer):
         self.config = config
         self.train_dataloader = dataloaders["train"]
         if len_epoch is None:
-            print('HERE')
+            print('EPOCH EQUALS TO ONE DATALOADER')
             # epoch-based training
             self.len_epoch = len(self.train_dataloader)
         else:
-            print('There')
+            print('EPOCH LENGTH:', len_epoch)
             # iteration-based training
             self.train_dataloader = inf_loop(self.train_dataloader)
             self.len_epoch = len_epoch
@@ -85,6 +85,7 @@ class Trainer(BaseTrainer):
         self.model.train()
         self.train_metrics.reset()
         self.writer.add_scalar("epoch", epoch)
+        log_probs, targets = [], []
         for batch_idx, batch in enumerate(
                 tqdm(self.train_dataloader, desc='Train epoch', total=self.len_epoch)
         ):
@@ -107,6 +108,8 @@ class Trainer(BaseTrainer):
                 else:
                     raise e
             self.train_metrics.update("grad norm", self.get_grad_norm())
+            log_probs.append(batch['log_probs'])
+            targets.append(batch['target'])
             if batch_idx % self.log_step == 0:
                 self.writer.set_step((epoch - 1) * self.len_epoch + batch_idx)
                 """
@@ -127,6 +130,11 @@ class Trainer(BaseTrainer):
                 self.train_metrics.reset()
         
         log = last_train_metrics
+
+        log_probs = torch.cat(log_probs, dim=0)
+        targets = torch.cat(targets, dim=-1)
+        for met in self.metrics:
+            self.evaluation_metrics.update(met.name, met(log_probs, targets))
 
         for part, dataloader in self.evaluation_dataloaders.items():
             val_log = self._evaluation_epoch(epoch, part, dataloader)
@@ -160,8 +168,10 @@ class Trainer(BaseTrainer):
                     self.lr_scheduler.step()
 
         metrics.update("loss", batch["loss"].item())
-        for met in self.metrics:
-            metrics.update(met.name, met(**batch))
+        """
+            for met in self.metrics:
+                metrics.update(met.name, met(**batch))
+        """
         return batch
 
     def _evaluation_epoch(self, epoch, part, dataloader):
@@ -173,6 +183,7 @@ class Trainer(BaseTrainer):
         """
         self.model.eval()
         self.evaluation_metrics.reset()
+        log_probs, targets = [], []
         with torch.no_grad():
             for batch_idx, batch in tqdm(
                     enumerate(dataloader),
@@ -184,13 +195,20 @@ class Trainer(BaseTrainer):
                     is_train=False,
                     metrics=self.evaluation_metrics,
                 )
+            log_probs.append(batch['log_probs'])
+            targets.append(batch['target'])
             self.writer.set_step(epoch * self.len_epoch, part)
-            self._log_scalars(self.evaluation_metrics)
+            #self._log_scalars(self.evaluation_metrics)
             self._log_spectrogram(batch["spectrogram"])
 
         # add histogram of model parameters to the tensorboard
         for name, p in self.model.named_parameters():
             self.writer.add_histogram(name, p, bins="auto")
+        log_probs = torch.cat(log_probs, dim=0)
+        targets = torch.cat(targets, dim=-1)
+        for met in self.metrics:
+            self.evaluation_metrics.update(met.name, met(log_probs, targets))
+        self._log_scalars(self.evaluation_metrics)
         return self.evaluation_metrics.result()
 
     def _progress(self, batch_idx):
