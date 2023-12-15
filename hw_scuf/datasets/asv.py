@@ -68,12 +68,14 @@ class ASV(BaseDataset):
         assert split_dir.exists(), "No data folder"
 
         for file in tqdm(split_dir.iterdir(), desc='making index'):
-            logger.info('Cur path ' + str(file.stem))
-            index.append(
-                {
-                    "path": str(file.absolute()),
-                    "target": target[file.stem]
-                }
-            )
+            if file.stem in target:
+                index.append(
+                    {
+                        "path": str(file.absolute()),
+                        "target": target[file.stem]
+                    }
+                )
+            else:
+                logger.info('File ' + file.stem + ' has no target')
         logger.info('Found ' + str(len(index)) + ' flac files')
         return index
