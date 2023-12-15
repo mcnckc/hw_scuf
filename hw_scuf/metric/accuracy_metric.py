@@ -12,4 +12,4 @@ class AccuracyMetric(BaseMetric):
 
     def __call__(self, log_probs: Tensor, target: Tensor, **kwargs):
         preds = log_probs.argmax(dim=-1)
-        return torch.sum(preds == target) / preds.size()
+        return torch.sum(preds == target) / preds.numel()
