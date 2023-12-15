@@ -188,7 +188,7 @@ class Trainer(BaseTrainer):
         with torch.no_grad():
             for batch_idx, batch in tqdm(
                     enumerate(dataloader),
-                    desc=part,
+                    desc="Validation...",
                     total=len(dataloader),
             ):
                 batch = self.process_batch(
