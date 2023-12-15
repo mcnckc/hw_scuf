@@ -60,22 +60,17 @@ class ASV(BaseDataset):
             tg_file = tg_dir / 'ASVspoof2019.LA.cm.eval.trl.txt'
         else:
             assert False, "Invalid part"
-        target = dict()
-        with tg_file.open() as f:
-            for line in f:
-                data = line.split()
-                target[data[1]] = (data[-1] == 'spoof')
-        assert split_dir.exists(), "No data folder"
 
-        for file in tqdm(split_dir.iterdir(), desc='making index'):
-            if file.stem in target:
+        assert split_dir.exists(), "No data folder"
+        with tg_file.open() as f:
+            for line in tqdm(f, desc='creating index'):
+                data = line.split()
+                stem, spoof = data[1], (data[-1] == 'spoof')
                 index.append(
                     {
-                        "path": str(file.absolute()),
-                        "target": target[file.stem]
+                        "path": str((split_dir / (stem + '.flac')).absolute()),
+                        "target": spoof
                     }
                 )
-            else:
-                logger.info('File ' + file.stem + ' has no target')
         logger.info('Found ' + str(len(index)) + ' flac files')
         return index
