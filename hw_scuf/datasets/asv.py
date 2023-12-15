@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 class ASV(BaseDataset):
     def __init__(self, part, data_dir=None, *args, **kwargs):
 
-        self.kaggle = False
+        self.kaggle = True
         if data_dir is None:
             data_dir = ROOT_PATH / "data" / "datasets" / "librispeech"
             data_dir.mkdir(exist_ok=True, parents=True)
@@ -32,7 +32,11 @@ class ASV(BaseDataset):
 
     def _get_or_load_index(self, part):
        
-        index_path = self._data_dir / f"{part}_index.json" 
+        if self.kaggle:
+            Path('kaggle/datasets/asv').mkdir(exist_ok=True, parents=True)
+            index_path = Path('kaggle/datasets/asv') / f"{part}_index.json"
+        else:
+            index_path = self._data_dir / f"{part}_index.json" 
         if index_path.exists():
             with index_path.open() as f:
                 index = json.load(f)
