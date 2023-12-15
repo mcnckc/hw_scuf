@@ -30,6 +30,7 @@
           "type": "ASV",
           "args": {
             "part": "train",
+            "data_dir": "/kaggle/input/asvpoof-2019-dataset/LA/LA",
             "limit": 10
           }
         }
@@ -43,6 +44,7 @@
           "type": "ASV",
           "args": {
             "part": "dev",
+            "data_dir": "/kaggle/input/asvpoof-2019-dataset/LA/LA",
             "limit": 10
           }
         }
