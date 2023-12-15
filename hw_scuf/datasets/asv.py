@@ -67,7 +67,7 @@ class ASV(BaseDataset):
             index.append(
                 {
                     "path": str(file.absolute()),
-                    "target": target[str(file.stem())]
+                    "target": target[file.stem]
                 }
             )
         logger.info('Found ' + str(len(index)) + ' flac files')
