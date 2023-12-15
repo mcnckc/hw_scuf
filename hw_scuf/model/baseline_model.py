@@ -5,8 +5,8 @@ from hw_scuf.base import BaseModel
 
 
 class BaselineModel(BaseModel):
-    def __init__(self, n_feats, n_class, fc_hidden=512, **batch):
-        super().__init__(n_feats, n_class, **batch)
+    def __init__(self, n_feats, fc_hidden=512, **batch):
+        super().__init__(n_feats, **batch)
         self.net = Sequential(
             # people say it can aproximate any function...
             nn.Linear(in_features=n_feats, out_features=fc_hidden),
