@@ -1,0 +1,96 @@
+{
+  "name": "one_batch_test",
+  "n_gpu": 1,
+  "preprocessing": {
+    "sr": 16000,
+    "spectrogram": {
+      "type": "MelSpectrogram",
+      "args": {
+      }
+    },
+    "log_spec": true
+  },
+  "augmentations": {
+    "wave": [],
+    "spectrogram": []
+  },
+  "arch": {
+    "type": "BaselineModel",
+    "args": {
+      "n_feats": 128,
+      "fc_hidden": 512,
+      "max_spec_len":400
+    }
+  },
+  "data": {
+    "train": {
+      "batch_size": 64,
+      "num_workers": 0,
+      "datasets": [
+        {
+          "type": "ASV",
+          "args": {
+            "part": "train",
+            "data_dir": "/kaggle/input/asvpoof-2019-dataset/LA/LA",
+            "max_spec_len":400,
+            "limit": 10000
+          }
+        }
+      ]
+    },
+    "val": {
+      "batch_size": 64,
+      "num_workers": 0,
+      "datasets": [
+        {
+          "type": "ASV",
+          "args": {
+            "part": "dev",
+            "data_dir": "/kaggle/input/asvpoof-2019-dataset/LA/LA",
+            "max_spec_len":400,
+            "limit": 10000
+          }
+        }
+      ]
+    }
+  },
+  "optimizer": {
+    "type": "SGD",
+    "args": {
+      "lr": 1e-2
+    }
+  },
+  "loss": {
+    "type": "CE",
+    "args": {}
+  },
+  "metrics": [
+    {
+      "type": "EERMetric",
+      "args": {
+        "name": "EER"
+      }
+    }
+  ],
+  "lr_scheduler": {
+    "type": "OneCycleLR",
+    "args": {
+      "steps_per_epoch": 100,
+      "epochs": 50,
+      "anneal_strategy": "cos",
+      "max_lr": 1e-2,
+      "pct_start": 0.2
+    }
+  },
+  "trainer": {
+    "epochs": 50,
+    "save_dir": "saved/",
+    "save_period": 5,
+    "verbosity": 2,
+    "monitor": "min val_loss",
+    "early_stop": 100,
+    "visualize": "wandb",
+    "wandb_project": "scuf_project",
+    "grad_norm_clip": 10
+  }
+}
