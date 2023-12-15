@@ -63,7 +63,7 @@ class ASV(BaseDataset):
                 target[data[1]] = (data[-1] == 'spoof')
         assert split_dir.exists(), "No data folder"
 
-        for file in tqdm(os.listdir(split_dir), desc='making index'):
+        for file in tqdm(split_dir.iterdir(), desc='making index'):
             index.append(
                 {
                     "path": str(file.absolute()),
