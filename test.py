@@ -11,7 +11,6 @@ from hw_scuf.trainer import Trainer
 from hw_scuf.utils import ROOT_PATH
 from hw_scuf.utils.object_loading import get_dataloaders
 from hw_scuf.utils.parse_config import ConfigParser
-from hw_scuf.metric.utils import calc_cer, calc_wer
 
 DEFAULT_CHECKPOINT_PATH = ROOT_PATH / "default_test_model" / "checkpoint.pth"
 
@@ -22,14 +21,12 @@ def main(config, out_file):
     # define cpu or gpu if possible
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # text_encoder
-    text_encoder = config.get_text_encoder()
 
     # setup data_loader instances
-    dataloaders = get_dataloaders(config, text_encoder)
+    dataloaders = get_dataloaders(config)
 
     # build model architecture
-    model = config.init_obj(config["arch"], module_model, n_class=len(text_encoder))
+    model = config.init_obj(config["arch"], module_model)
     logger.info(model)
 
     logger.info("Loading checkpoint: {} ...".format(config.resume))
@@ -54,36 +51,18 @@ def main(config, out_file):
             else:
                 batch["logits"] = output
             batch["log_probs"] = torch.log_softmax(batch["logits"], dim=-1)
-            batch["log_probs_length"] = model.transform_input_lengths(
-                batch["spectrogram_length"]
-            )
             batch["probs"] = batch["log_probs"].exp().cpu()
             batch["argmax"] = batch["log_probs"].cpu().argmax(-1)
-            for i in range(len(batch["text"])):
-                argmax = batch["argmax"][i]
-                argmax = argmax[: int(batch["log_probs_length"][i])]
-                results.append(
-                    {
-                        "ground_truth": batch["text"][i],
-                        "pred_text_argmax": text_encoder.ctc_decode(argmax.cpu().numpy()),
+            results.append(
+                {
+                    "For audio": str(batch['audio_path']),
+                    "Bonafide probability": batch["probs"][0][0].item(),
+                    "Scuf probabilty": batch["probs"][0][1].item(),
+                }
+            )
 
-                        """
-                        "pred_text_beam_search": text_encoder.ctc_beam_search(
-                            batch["probs"][i], batch["log_probs_length"][i], beam_size=100
-                        )[:10],
-                        """
-
-                        "pred_text_beam_search": ''
-                    }
-                )
     with Path(out_file).open("w") as f:
         json.dump(results, f, indent=2)
-    cers, wers = [], []
-    for texts in results:
-        cers.append(calc_cer(texts['ground_truth'], texts['pred_text_argmax']))
-        wers.append(calc_wer(texts['ground_truth'], texts['pred_text_argmax']))
-    print('Final CER:', sum(cers) / len(cers) * 100)
-    print('Final WER:', sum(wers) / len(wers) * 100)
 
 
 if __name__ == "__main__":
@@ -179,7 +158,7 @@ if __name__ == "__main__":
         }
 
     assert config.config.get("data", {}).get("test", None) is not None
-    config["data"]["test"]["batch_size"] = args.batch_size
+    #config["data"]["test"]["batch_size"] = args.batch_size
     config["data"]["test"]["n_jobs"] = args.jobs
 
     main(config, args.output)

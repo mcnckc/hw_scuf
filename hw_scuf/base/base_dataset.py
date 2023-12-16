@@ -50,7 +50,8 @@ class BaseDataset(Dataset):
             "audio": audio_wave,
             "spectrogram": audio_spec,
             "duration": audio_wave.size(1) / self.config_parser["preprocessing"]["sr"],
-            "target": data_dict['target']
+            "target": data_dict['target'],
+            "audio_path": data_dict['path']
         }
 
     def __len__(self):
