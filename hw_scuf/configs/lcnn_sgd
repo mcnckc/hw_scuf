@@ -1,0 +1,133 @@
+{
+    "name": "full_test_lcnn",
+    "n_gpu": 1,
+    "preprocessing": {
+      "sr": 16000,
+      "spectrogram": {
+        "type": "MelSpectrogram",
+        "args": {
+            "n_mels": 256
+        }
+      },
+      "log_spec": true
+    },
+    "augmentations": {
+      "wave": [],
+      "spectrogram": []
+    },
+    "arch": {
+      "type": "LCNN",
+      "args": {
+        "H": 256,
+        "W": 600
+      }
+    },
+    "data": {
+      "train": {
+        "batch_size": 64,
+        "num_workers": 0,
+        "datasets": [
+          {
+            "type": "ASV",
+            "args": {
+              "part": "train",
+              "data_dir": "/kaggle/input/asvpoof-2019-dataset/LA/LA",
+              "max_spec_len":600
+            }
+          }
+        ]
+      },
+      "val": {
+        "batch_size": 64,
+        "num_workers": 0,
+        "datasets": [
+          {
+            "type": "ASV",
+            "args": {
+              "part": "dev",
+              "data_dir": "/kaggle/input/asvpoof-2019-dataset/LA/LA",
+              "max_spec_len":600
+            }
+          }
+        ]
+      },
+      "test": {
+        "batch_size": 64,
+        "num_workers": 0,
+        "datasets": [
+          {
+            "type": "ASV",
+            "args": {
+              "part": "eval",
+              "data_dir": "/kaggle/input/asvpoof-2019-dataset/LA/LA",
+              "max_spec_len":600
+            }
+          }
+        ]
+      }
+    },
+    "optimizer": {
+      "type": "SGD",
+      "args": {
+        "lr": 3e-3,
+        "momentum": 0.9,
+        "weight_decay": 1e-4
+      }
+    },
+    "loss": {
+      "type": "CE",
+      "args": {}
+    },
+    "metrics": [
+      {
+        "type": "EERMetric",
+        "args": {
+          "name": "EER"
+        }
+      },
+      {
+        "type": "AccuracyMetric",
+        "args": {
+          "name": "Accuracy"
+        }
+      },
+      {
+        "type": "AccuracyBonafide",
+        "args": {
+          "name": "Bonafide accuracy"
+        }
+      },
+      {
+        "type": "AccuracyScuf",
+        "args": {
+          "name": "Scuf accuracy"
+        }
+      },
+      {
+        "type": "ScufPart",
+        "args": {
+          "name": "Scuf predictions percentage"
+        }
+      }
+    ],
+    "lr_scheduler": {
+      "type": "StepLR",
+      "args": {
+        "step_size": 2000,
+        "gamma": 0.5
+      }
+    },
+    "trainer": {
+      "epochs": 50,
+      "save_dir": "saved/",
+      "save_period": 5,
+      "verbosity": 2,
+      "monitor": "min val_loss",
+      "early_stop": 100,
+      "visualize": "wandb",
+      "wandb_project": "scuf_project",
+      "grad_norm_clip": 10,
+      "len_epoch": 2
+    }
+  }
+  
