@@ -133,7 +133,6 @@ class Trainer(BaseTrainer):
 
         log_probs = torch.cat(log_probs, dim=0)
         targets = torch.cat(targets, dim=-1)
-        print("TRAIN TARGETS SHAPE", targets.shape)
         for met in self.metrics:
             self.evaluation_metrics.update(met.name, met(log_probs, targets))
 
@@ -196,19 +195,16 @@ class Trainer(BaseTrainer):
                     is_train=False,
                     metrics=self.evaluation_metrics,
                 )
-            print("APPEND", len(targets), len(log_probs))
-            log_probs.append(batch['log_probs'])
-            targets.append(batch['target'])
+                log_probs.append(batch['log_probs'])
+                targets.append(batch['target'])
             self.writer.set_step(epoch * self.len_epoch, part)
             #self._log_scalars(self.evaluation_metrics)
             self._log_spectrogram(batch["spectrogram"])
-        print("LEN TG", len(targets), len(log_probs))
-        # add histogram of model parameters to the tensorboard
-        for name, p in self.model.named_parameters():
-            self.writer.add_histogram(name, p, bins="auto")
-        log_probs = torch.cat(log_probs, dim=0)
-        targets = torch.cat(targets, dim=-1)
-        print("VAL TARGETS SHAPE", targets.shape)
+            for name, p in self.model.named_parameters():
+                self.writer.add_histogram(name, p, bins="auto")
+            
+            log_probs = torch.cat(log_probs, dim=0)
+            targets = torch.cat(targets, dim=-1)
         for met in self.metrics:
             self.evaluation_metrics.update(met.name, met(log_probs, targets))
         self._log_scalars(self.evaluation_metrics)
