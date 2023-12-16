@@ -30,7 +30,7 @@
           {
             "type": "TestSet",
             "args": {
-              "max_spec_len":400
+              "max_spec_len":600
             }
           }
         ]

@@ -1,37 +1,37 @@
 [
   {
-    "For audio": "['C:\\\\HSE2\\\\DLA\\\\SKOOF\\\\test_data\\\\audio_3_scuf.wav']",
-    "Bonafide probability": 5.195414360059658e-06,
-    "Scuf probabilty": 0.9999947547912598
+    "For audio": "['C:\\\\HSE2\\\\DLA\\\\SKOOF\\\\test_data\\\\audio_2.flac']",
+    "Bonafide probability": 0.5521079897880554,
+    "Scuf probabilty": 0.44789204001426697
   },
   {
     "For audio": "['C:\\\\HSE2\\\\DLA\\\\SKOOF\\\\test_data\\\\audio_2_scuf.wav']",
-    "Bonafide probability": 3.1079514517529105e-09,
-    "Scuf probabilty": 1.0
-  },
-  {
-    "For audio": "['C:\\\\HSE2\\\\DLA\\\\SKOOF\\\\test_data\\\\audio_3.flac']",
-    "Bonafide probability": 4.693328446592204e-05,
-    "Scuf probabilty": 0.999953031539917
-  },
-  {
-    "For audio": "['C:\\\\HSE2\\\\DLA\\\\SKOOF\\\\test_data\\\\audio_2.flac']",
-    "Bonafide probability": 3.6050137168786023e-06,
-    "Scuf probabilty": 0.9999964237213135
-  },
-  {
-    "For audio": "['C:\\\\HSE2\\\\DLA\\\\SKOOF\\\\test_data\\\\\u0421\u0447\u0430\u0441\u0442\u044c\u0435\u043c\u0435\u0442.wav']",
-    "Bonafide probability": 0.0008764354279264808,
-    "Scuf probabilty": 0.9991235733032227
-  },
-  {
-    "For audio": "['C:\\\\HSE2\\\\DLA\\\\SKOOF\\\\test_data\\\\audio_1.flac']",
-    "Bonafide probability": 3.7765614251839e-05,
-    "Scuf probabilty": 0.9999622106552124
+    "Bonafide probability": 0.0013844131026417017,
+    "Scuf probabilty": 0.9986156225204468
   },
   {
     "For audio": "['C:\\\\HSE2\\\\DLA\\\\SKOOF\\\\test_data\\\\audio_1_scuf.wav']",
-    "Bonafide probability": 3.522976008141221e-11,
-    "Scuf probabilty": 1.0
+    "Bonafide probability": 0.0006885041366331279,
+    "Scuf probabilty": 0.9993114471435547
+  },
+  {
+    "For audio": "['C:\\\\HSE2\\\\DLA\\\\SKOOF\\\\test_data\\\\\u0421\u0447\u0430\u0441\u0442\u044c\u0435\u043c\u0435\u0442.wav']",
+    "Bonafide probability": 0.009097863920032978,
+    "Scuf probabilty": 0.9909021854400635
+  },
+  {
+    "For audio": "['C:\\\\HSE2\\\\DLA\\\\SKOOF\\\\test_data\\\\audio_3.flac']",
+    "Bonafide probability": 0.9805091619491577,
+    "Scuf probabilty": 0.019490787759423256
+  },
+  {
+    "For audio": "['C:\\\\HSE2\\\\DLA\\\\SKOOF\\\\test_data\\\\audio_3_scuf.wav']",
+    "Bonafide probability": 0.0002061410341411829,
+    "Scuf probabilty": 0.9997938275337219
+  },
+  {
+    "For audio": "['C:\\\\HSE2\\\\DLA\\\\SKOOF\\\\test_data\\\\audio_1.flac']",
+    "Bonafide probability": 0.9986710548400879,
+    "Scuf probabilty": 0.0013289491180330515
   }
 ]
