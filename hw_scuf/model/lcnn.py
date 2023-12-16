@@ -40,7 +40,7 @@ class LCNN(BaseModel):
         self.net = Sequential(
             nn.Conv2d(1, 64, 5, 1, padding='same'), #1
             MFM(),                                  #2
-            nn.MaxPool2d(2, padding='same'),        #3
+            nn.MaxPool2d(2),                        #3
 
             nn.Conv2d(32, 64, 1, 1, padding='same'),#4
             MFM(),                                  #5
@@ -48,7 +48,7 @@ class LCNN(BaseModel):
             nn.Conv2d(32, 96, 3, 1, padding='same'),#7
             MFM(),                                  #8
 
-            nn.MaxPool2d(2, padding='same'),        #9
+            nn.MaxPool2d(2),                        #9
             nn.BatchNorm2d(48),                     #10
 
             nn.Conv2d(48, 96, 1, 1, padding='same'),#11
@@ -57,7 +57,7 @@ class LCNN(BaseModel):
             nn.Conv2d(48, 128, 3, 1, padding='same'),#14
             MFM(),                                  #15
 
-            nn.MaxPool2d(2, padding='same'),        #16
+            nn.MaxPool2d(2),                        #16
 
             nn.Conv2d(64, 64, 1, 1, padding='same'),#17
             MFM(),                                  #18
@@ -75,9 +75,9 @@ class LCNN(BaseModel):
             nn.Dropout(0.1),
             nn.Conv2d(32, 32, 1, 1, padding='same'),
 
-            nn.MaxPool2d(2, padding='same'),        #28
+            nn.MaxPool2d(2),                        #28
             nn.Flatten(),
-            nn.Linear(nH * nW * 32, 160),             #29
+            nn.Linear(nH * nW * 32, 160),           #29
             MFM(),                                  #30
             BatchNorm0d(80),                        #31
             nn.Linear(80, 2)                        #32
