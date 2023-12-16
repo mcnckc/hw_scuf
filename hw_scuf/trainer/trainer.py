@@ -134,8 +134,9 @@ class Trainer(BaseTrainer):
         log_probs = torch.cat(log_probs, dim=0)
         targets = torch.cat(targets, dim=-1)
         for met in self.metrics:
-            self.evaluation_metrics.update(met.name, met(log_probs, targets))
-
+            self.train_metrics.update(met.name, met(log_probs, targets))
+        self._log_scalars(self.train_metrics)
+        
         for part, dataloader in self.evaluation_dataloaders.items():
             val_log = self._evaluation_epoch(epoch, part, dataloader)
             log.update(**{f"{part}_{name}": value for name, value in val_log.items()})

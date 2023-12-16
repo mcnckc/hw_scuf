@@ -16,4 +16,7 @@ class AccuracyMetric(BaseMetric):
         print("PREDS", preds.shape)
         print("TARGET", target.shape)
         print('Measure', torch.abs(preds-target).float().mean())
+        eq = (preds == target)
+        print("ACC0", eq[target == 0].float().mean())
+        print("ACC1", eq[target == 1].float().mean())
         return torch.sum(preds == target) / preds.numel()
