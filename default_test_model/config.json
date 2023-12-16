@@ -6,6 +6,7 @@
       "spectrogram": {
         "type": "MelSpectrogram",
         "args": {
+            "n_mels": 256
         }
       },
       "log_spec": true
@@ -15,11 +16,10 @@
       "spectrogram": []
     },
     "arch": {
-      "type": "BaselineModel",
+      "type": "LCNN",
       "args": {
-        "n_feats": 128,
-        "fc_hidden": 512,
-        "max_spec_len":400
+        "H": 256,
+        "W": 600
       }
     },
     "data": {
@@ -37,67 +37,65 @@
       }
     },
     "optimizer": {
-      "type": "SGD",
-      "args": {
-        "lr": 1e-2
-      }
-    },
-    "loss": {
-      "type": "CE",
-      "args": {}
-    },
-    "metrics": [
-      {
-        "type": "EERMetric",
+        "type": "Adam",
         "args": {
-          "name": "EER"
+          "lr": 3e-4,
+          "weight_decay": 5e-4
         }
       },
-      {
-        "type": "AccuracyMetric",
+      "loss": {
+        "type": "CE",
+        "args": {}
+      },
+      "metrics": [
+        {
+          "type": "EERMetric",
+          "args": {
+            "name": "EER"
+          }
+        },
+        {
+          "type": "AccuracyMetric",
+          "args": {
+            "name": "Accuracy"
+          }
+        },
+        {
+          "type": "AccuracyBonafide",
+          "args": {
+            "name": "Bonafide accuracy"
+          }
+        },
+        {
+          "type": "AccuracyScuf",
+          "args": {
+            "name": "Scuf accuracy"
+          }
+        },
+        {
+          "type": "ScufPart",
+          "args": {
+            "name": "Scuf predictions percentage"
+          }
+        }
+      ],
+      "lr_scheduler": {
+        "type": "StepLR",
         "args": {
-          "name": "Accuracy"
+          "step_size": 2000,
+          "gamma": 0.5
         }
       },
-      {
-        "type": "AccuracyBonafide",
-        "args": {
-          "name": "Bonafide accuracy"
-        }
-      },
-      {
-        "type": "AccuracyScuf",
-        "args": {
-          "name": "Scuf accuracy"
-        }
-      },
-      {
-        "type": "ScufPart",
-        "args": {
-          "name": "Scuf predictions percentage"
-        }
-      }
-    ],
-    "lr_scheduler": {
-      "type": "OneCycleLR",
-      "args": {
-        "steps_per_epoch": 100,
+      "trainer": {
         "epochs": 50,
-        "anneal_strategy": "cos",
-        "max_lr": 1e-2,
-        "pct_start": 0.2
-      }
-    },
-    "trainer": {
-      "epochs": 50,
-      "save_dir": "saved/",
-      "save_period": 5,
-      "verbosity": 2,
-      "monitor": "min val_loss",
-      "early_stop": 100,
-      "visualize": "wandb",
-      "wandb_project": "scuf_project",
-      "grad_norm_clip": 10,
-      "len_epoch": 2
+        "save_dir": "saved/",
+        "save_period": 5,
+        "verbosity": 2,
+        "monitor": "min val_loss",
+        "early_stop": 100,
+        "visualize": "wandb",
+        "wandb_project": "scuf_project",
+        "grad_norm_clip": 10,
+        "len_epoch": 2
     }
-  }
+}
