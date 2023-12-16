@@ -50,6 +50,20 @@
             }
           }
         ]
+      },
+      "test": {
+        "batch_size": 256,
+        "num_workers": 0,
+        "datasets": [
+          {
+            "type": "ASV",
+            "args": {
+              "part": "eval",
+              "data_dir": "/kaggle/input/asvpoof-2019-dataset/LA/LA",
+              "max_spec_len":400
+            }
+          }
+        ]
       }
     },
     "optimizer": {
@@ -113,7 +127,8 @@
       "early_stop": 100,
       "visualize": "wandb",
       "wandb_project": "scuf_project",
-      "grad_norm_clip": 10
+      "grad_norm_clip": 10,
+      "len_epoch": 2
     }
   }
   
