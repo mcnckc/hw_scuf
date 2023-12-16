@@ -16,7 +16,7 @@
       "spectrogram": []
     },
     "arch": {
-      "type": "LCNNNoDropOut",
+      "type": "LCNNNoDropout",
       "args": {
         "H": 256,
         "W": 600
