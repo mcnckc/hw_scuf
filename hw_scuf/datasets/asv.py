@@ -60,7 +60,7 @@ class ASV(BaseDataset):
             tg_file = tg_dir / 'ASVspoof2019.LA.cm.eval.trl.txt'
         else:
             assert False, "Invalid part"
-
+        print('Path:', str(split_dir.absolute))
         assert split_dir.exists(), "No data folder"
         am = 0
         with tg_file.open() as f:
