@@ -40,7 +40,6 @@ class BaseDataset(Dataset):
         self._index: List[dict] = index
         print("SCUF AMOUNT:", np.sum([item['target'] for item in index]))
         print("SCUF PART:", np.mean([item['target'] for item in index]))
-        print("INDEX:", [item['target'] for item in index])
 
     def __getitem__(self, ind):
         data_dict = self._index[ind]
