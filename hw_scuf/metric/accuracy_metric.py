@@ -15,5 +15,5 @@ class AccuracyMetric(BaseMetric):
         print("LOG PROBS", log_probs.shape)
         print("PREDS", preds.shape)
         print("TARGET", target.shape)
-        print('Measure', (preds-target).float().mean())
+        print('Measure', torch.abs(preds-target).float().mean())
         return torch.sum(preds == target) / preds.numel()
