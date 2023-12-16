@@ -6,6 +6,7 @@
       "spectrogram": {
         "type": "MelSpectrogram",
         "args": {
+            "n_mels": 256
         }
       },
       "log_spec": true
@@ -17,7 +18,7 @@
     "arch": {
       "type": "LCNN",
       "args": {
-        "H": 128,
+        "H": 256,
         "W": 600
       }
     },
