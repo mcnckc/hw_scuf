@@ -67,7 +67,6 @@ class ASV(BaseDataset):
             for line in tqdm(f, desc='creating index'):
                 data = line.split()
                 stem, spoof = data[1], (data[-1] == 'spoof')
-                print(data[-1])
                 index.append(
                     {
                         "path": str((split_dir / (stem + '.flac')).absolute()),

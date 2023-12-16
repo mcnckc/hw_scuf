@@ -45,9 +45,9 @@ class Trainer(BaseTrainer):
             self.len_epoch = len(self.train_dataloader)
         else:
             print('EPOCH LENGTH:', len_epoch)
+            self.len_epoch = int(len_epoch * len(self.train_dataloader))
             # iteration-based training
             self.train_dataloader = inf_loop(self.train_dataloader)
-            self.len_epoch = len_epoch
         print('Train Length', self.len_epoch)
         self.evaluation_dataloaders = {k: v for k, v in dataloaders.items() if k != "train"}
         self.lr_scheduler = lr_scheduler
