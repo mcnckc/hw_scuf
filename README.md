@@ -7,13 +7,12 @@ pip install -r ./requirements.txt
 запуск трейна
 
 ```
-python hw_scuf/train.py -c hw_asr/hw_asr/configs/final.json
+python train.py -c hw_scuf/configs/lcnn_full.json
 ```
 
-После этого надо переложить из папки saved последний чекпоинт и его config в папку `default_test_model`, для запуска теста
-переименовать их в `checkpoint.pth` и `config.json` соответственно.
-
-Готовые чекпоинт и конфиг уже лежат в папке `default_test_model`.
+После этого надо переложить из папки saved последний чекпоинт в папку `default_test_model`, для запуска теста
+переименовать его в `checkpoint.pth`.
+В папке уже лежит готовый чекпоинт, и нужный конфиг к нему.
 
 запуск теста
 
