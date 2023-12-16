@@ -85,7 +85,7 @@ class LCNN(BaseModel):
 
     def forward(self, spectrogram, **batch):
         out = self.net(spectrogram[:, None, :, :])
-        return {"logits": out / torch.linalg.vector_norm(self.net[-1].weights, dim=0)}
+        return {"logits": out / torch.linalg.vector_norm(self.net[-1].weight, dim=-1)}
 
     def transform_input_lengths(self, input_lengths):
         return input_lengths  # we don't reduce time dimension here
