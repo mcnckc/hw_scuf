@@ -56,7 +56,8 @@ class LCNN(BaseModel):
             nn.BatchNorm2d(48),                     #13
             nn.Conv2d(48, 128, 3, 1, padding='same'),#14
             MFM(),                                  #15
-
+            nn.Dropout(0.1),
+            
             nn.MaxPool2d(2),                        #16
 
             nn.Conv2d(64, 64, 1, 1, padding='same'),#17
@@ -64,6 +65,7 @@ class LCNN(BaseModel):
             nn.BatchNorm2d(32),                     #19
             nn.Conv2d(32, 64, 3, 1, padding='same'),#20
             MFM(),                                  #21
+            nn.Dropout(0.1),
 
             nn.BatchNorm2d(32),                     #22
 
