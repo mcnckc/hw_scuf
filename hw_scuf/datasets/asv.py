@@ -62,15 +62,19 @@ class ASV(BaseDataset):
             assert False, "Invalid part"
 
         assert split_dir.exists(), "No data folder"
+        am = 0
         with tg_file.open() as f:
             for line in tqdm(f, desc='creating index'):
                 data = line.split()
                 stem, spoof = data[1], (data[-1] == 'spoof')
+                print(data[-1])
                 index.append(
                     {
                         "path": str((split_dir / (stem + '.flac')).absolute()),
                         "target": spoof
                     }
                 )
+                am += int(spoof)
+        logger.info('Found ' + str(am) + ' spoofs')
         logger.info('Found ' + str(len(index)) + ' flac files')
         return index
