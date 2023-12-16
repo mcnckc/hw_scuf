@@ -123,7 +123,9 @@ class Trainer(BaseTrainer):
                     "learning rate", self.optimizer.param_groups[0]['lr']
                 )
                 self._log_spectrogram(batch["spectrogram"])
-                self._log_scalars(self.train_metrics)
+                self.writer.add_scalar(
+                    "loss_train", self.train_metrics.avg("loss")
+                )
                 # we don't want to reset train metrics at the start of every epoch
                 # because we are interested in recent train metrics
                 last_train_metrics = self.train_metrics.result()

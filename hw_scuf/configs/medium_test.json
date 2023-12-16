@@ -76,6 +76,18 @@
       "args": {
         "name": "Accuracy"
       }
+    },
+    {
+      "type": "AccuracyBonafide",
+      "args": {
+        "name": "Bonafide accuracy"
+      }
+    },
+    {
+      "type": "AccuracyScuf",
+      "args": {
+        "name": "Scuf accuracy"
+      }
     }
   ],
   "lr_scheduler": {
