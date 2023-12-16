@@ -135,7 +135,7 @@ class Trainer(BaseTrainer):
         log_probs = torch.cat(log_probs, dim=0)
         targets = torch.cat(targets, dim=-1)
         for met in self.metrics:
-            log.update({met.name, met(log_probs, targets)})
+            log.update({met.name: met(log_probs, targets)})
         
         self._log_scalars(self.train_metrics)
         
